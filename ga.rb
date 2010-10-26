@@ -5,7 +5,7 @@ require 'digest/md5'
 require 'open-uri'
 require 'cgi'
 
-class GoogleAnalyticsMobile
+class AnalyticsMobile
   VERSION = '4.4sp';
   COOKIE_NAME = '__utmmobile';  
   GIF_DATA = [0x47, 0x49, 0x46, 0x38, 0x39, 0x61,

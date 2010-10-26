@@ -40,10 +40,6 @@ class GoogleAnalyticsMobile
     rand(0x7fffffff).to_i
   end
 
-
-  # Generate a visitor id for this hit.
-  # If there is a visitor id in the cookie, use that, otherwise
-  # use the guid if we have one, otherwise use a random number.
   def visitor_id
     domain_name = env["SERVER_NAME"]
     document_referer = params[:utmr]
@@ -123,6 +119,5 @@ class GoogleAnalyticsMobile
       :expires => 2.years.from_now
     }
   end
-
 end
 

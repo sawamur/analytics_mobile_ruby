@@ -1,0 +1,31 @@
+
+require 'test/unit'
+require 'ga'
+
+
+
+class GaTest < Test::Unit::TestCase
+
+  def test_get_ip
+    assert_equal "124.455.3.0",get_ip("124.455.3.123")
+    assert_equal "",get_ip("")
+  end
+
+  def test_get_rondom_number
+    assert get_random_number.kind_of?(Integer)
+  end
+  
+  def test_get_visitor_id
+    assert_equal "0x624c880082a99f6e",get_visitor_id("hoge","hige","mozilla",nil)
+    assert_not_nil get_visitor_id(nil,nil,"mozilla",nil)
+  end
+
+  def test_write_gif_data
+    assert_not_nil write_gif_data("hoge","uuu")
+  end
+  
+end
+
+
+
+

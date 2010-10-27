@@ -1,7 +1,7 @@
 
-= Google Analytics Mobile (Beta)  for Ruby
+= Google Analytics Mobile for Ruby
 
-This code is written based on Perl version.
+This code is based on Perl version.
 http://code.google.com/mobile/analytics/docs/web/
 
 == USAGE

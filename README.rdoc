@@ -8,10 +8,11 @@ http://code.google.com/mobile/analytics/docs/web/
 
 === controller
 
+ require 'ga'
  class FooController < ApplicationController
    ..
    def ga
-    ga = GoogleAnlyticsMobile.new(params,request.env,cookies)
+    ga = AnlyticsMobile.new(params,request.env,cookies)
     cookies[ga.cookie_name] = ga.cookie_value
     send_data ga.gif_data,ga.render_options
    end

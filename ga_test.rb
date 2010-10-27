@@ -26,9 +26,7 @@ class GaTest < Test::Unit::TestCase
     ga = AnalyticsMobile.new({:utmac => "hige"},
                                    { "HTTP_USER_AGENT" => "mozilla",
                                      "HTTP_X_DCMGUID" => "hoge" })
-
     assert_equal "0x624c880082a99f6e",ga.visitor_id
-
     ga2 = AnalyticsMobile.new({},{ "HTTP_USER_AGENT" => "mozilla"})
     assert_not_nil ga2.visitor_id
   end
@@ -59,10 +57,14 @@ class GaTest < Test::Unit::TestCase
     ga = AnalyticsMobile.new({:utmac => "hige"},
                                    { "HTTP_USER_AGENT" => "mozilla",
                                      "HTTP_X_DCMGUID" => "hoge" })
-    puts ga.utm_url
+    assert_match /google-analytics\.com/,ga.utm_url
   end
 
-
+  def test_beacon
+    img_url = AnalyticsMobile.beacon(9999,{ "HTTP_REFERER" => "http://hoge.gom/hhh",
+                                      "REQUEST_URI" => "/hoge/hige" })
+    assert_match %r{#{AnalyticsMobile::GA_PIXEL}\?utmac=9999},img_url
+  end
 end
 
 

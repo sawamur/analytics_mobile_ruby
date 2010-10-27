@@ -8,6 +8,7 @@ require 'cgi'
 class AnalyticsMobile
   VERSION = '4.4sp';
   COOKIE_NAME = '__utmmobile';  
+  GA_PIXEL = "/ga.rb"
   GIF_DATA = [0x47, 0x49, 0x46, 0x38, 0x39, 0x61,
               0x01, 0x00, 0x01, 0x00, 0x80, 0xff,
               0x00, 0xff, 0xff, 0xff, 0x00, 0x00,
@@ -41,14 +42,11 @@ class AnalyticsMobile
   end
 
   def visitor_id
-    domain_name = env["SERVER_NAME"]
-    document_referer = params[:utmr]
-    document_path = params[:utmp]
     account = params[:utmac]
     user_agent = env['HTTP_USER_AGENT']
     cookie = cookies[COOKIE_NAME]
-    guid = env['HTTP_X_DCMGUID']
-
+    guid = env['HTTP_X_DCMGUID'] || env['HTTP_X_UP_SUBNO']
+    
     return cookie unless cookie.blank?
     unless guid.blank?
       message = guid.to_s + account.to_s
@@ -71,23 +69,17 @@ class AnalyticsMobile
   end
 
   def send_request_to_google_analytics
-    opt = { 
-      'Accept-Language' => env["HTTP_ACCEPT_LANGUAGE"],
-      'User-Agent' => env["HTTP_USER_AGENT"] 
-    }
+    opt = { 'Accept-Language' => env["HTTP_ACCEPT_LANGUAGE"],
+            'User-Agent' => env["HTTP_USER_AGENT"]   }
     begin
       timeout(3) do
-        gif = open(utm_url,opt).read
+        open(utm_url,opt).read
       end
     rescue
     end
   end
 
   def utm_url
-    domain_name = env["SERVER_NAME"]
-    document_referer = params[:utmr]
-    document_path = params[:utmp]
-    account = params[:utmac]
     user_agent = env['HTTP_USER_AGENT']
     cookie = cookies[COOKIE_NAME]
     utm_gif_location = "http://www.google-analytics.com/__utm.gif"
@@ -95,10 +87,10 @@ class AnalyticsMobile
     utm_gif_location + '?' +
       'utmwv=' +  VERSION +
       '&utmn=' +  get_random_number().to_s +
-      '&utmhn=' + uri_escape(domain_name) +
-      '&utmr=' + uri_escape(document_referer) +
-      '&utmp=' + uri_escape(document_path) +
-      '&utmac=' + account + 
+      '&utmhn=' + uri_escape(env["SERVER_NAME"]) +
+      '&utmr=' + uri_escape(params[:utmr]) +
+      '&utmp=' + uri_escape(params[:utmp]) +
+      '&utmac=' + params[:utmac].to_s + 
       '&utmcc=__utma%3D999.999.999.999.999.1%3B' +
       '&utmvid=' + visitor_id +
       '&utmip=' + get_ip
@@ -118,6 +110,12 @@ class AnalyticsMobile
       :path => "/",
       :expires => 2.years.from_now
     }
+  end
+  
+  def self.beacon(account_id,env={})
+    ref = CGI.escape( env['HTTP_REFERER'] )
+    path = CGI.escape( env['REQUEST_URI'] )
+    "#{GA_PIXEL}?utmac=#{account_id}&utmn=#{rand(0xffffffff)}&utmr=#{ref}&utmp=#{path}&guid=ON"
   end
 end
 

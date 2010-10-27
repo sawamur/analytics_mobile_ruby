@@ -1,9 +1,9 @@
 
 require 'test/unit'
-require 'ga'
+require 'analytics_mobile'
 
 
-class GaTest < Test::Unit::TestCase
+class AnalyticsMobileTest < Test::Unit::TestCase
   def setup
   end
 

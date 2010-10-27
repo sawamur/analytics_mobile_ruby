@@ -1,5 +1,5 @@
 
 desc "test"
 task :test do
-  require 'ga_test'
+  require 'analytics_mobile_test'
 end

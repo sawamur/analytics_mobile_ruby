@@ -22,7 +22,8 @@ http://code.google.com/mobile/analytics/docs/web/
 === view
 
  <%=image_tag AnalyticsMobile.beacon(99999,request.env) %>
- # 99999 means your Account_id (eg.if your profile-id is UA-12345-1,then 12345)
+
+99999 means your Account_id (eg.if your profile-id is UA-12345-1,then 12345)
 
 === config/route.rb
 

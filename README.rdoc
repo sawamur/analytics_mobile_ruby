@@ -1,12 +1,14 @@
 
-Google Analytics Mobile (Beta) Server-Side code for Ruby
+= Google Analytics Mobile (Beta)  for Ruby
 
 This code is written based on Perl version.
 http://code.google.com/mobile/analytics/docs/web/
 
 == USAGE
 
- class SomeController
+=== controller
+
+ class FooController < ApplicationController
    ..
    def ga
     ga = GoogleAnlyticsMobile.new(params,request.env,cookies)
@@ -15,3 +17,13 @@ http://code.google.com/mobile/analytics/docs/web/
    end
    ...
  end	
+
+=== view
+
+ <%=image_tag AnalyticsMobile.beacon(request.env) %>
+
+=== config/route.rb
+
+ map.ga 'ga.rb',:controller => "foo",:action => "ga"
+
+
